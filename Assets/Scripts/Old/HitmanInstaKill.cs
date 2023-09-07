@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class HitmanInstaKill : MonoBehaviour
+{
+    public static bool colorChange = false;
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("BackBox"))
+        {
+            colorChange = true;
+        }
+        else
+        {
+            colorChange = false;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("BackBox"))
+        {
+            colorChange = false;
+        }
+    }
+}
