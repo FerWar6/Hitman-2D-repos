@@ -14,15 +14,6 @@ public class BoxManager : MonoBehaviour
             ableToHideBody = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.G) && ManageScene.currentEnemy != null && ableToHideBody)
-        {
-            destoyBody = true;
-            PlayerMovement.dragBody = false;
-            bodies++;
-        }
-        else
-        {
-            destoyBody = false;
-        }
+
     }
 }

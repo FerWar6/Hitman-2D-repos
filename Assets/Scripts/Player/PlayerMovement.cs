@@ -164,11 +164,24 @@ public class PlayerMovement : MonoBehaviour
             transform.position = boxPosition;
             getOutOfBox = false;
         }
+        if (inBox)
+        {
+            sr.enabled = false;
+            rb2D.simulated = false;
+            lockMovement = true;
+        }
+        else
+        {
+            sr.enabled = true;
+            rb2D.simulated = true;
+            lockMovement = false;
+        }
         #endregion
-
-
     }
-
+    public void SetPosition(Transform position)
+    {
+        transform.position = (position.position);
+    }
     public void PositionGetOutOfBox(Vector2 position)
     {
         boxPosition = position;

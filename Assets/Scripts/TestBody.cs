@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class TestBody : MonoBehaviour
 {
-    SpriteRenderer sr;
+    public CapsuleCollider2D arm1;
+    public CapsuleCollider2D arm2;
+    public CapsuleCollider2D leg1;
+    public CapsuleCollider2D leg2;
+
+    public SpriteRenderer sr;
     Vector2 player;
 
     public static bool dragingABody = false;
@@ -12,11 +17,10 @@ public class TestBody : MonoBehaviour
     bool isToggled = true;
     bool playerInRange = false;
     bool hasCollision = false;
-
+    bool collisionWPlayer;
     bool bodyKilled = false;
     private void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
         sr.color = Color.red;
     }
     void Update()
@@ -33,25 +37,17 @@ public class TestBody : MonoBehaviour
             isToggled = !isToggled;
             if (isToggled)
             {
-                if (ManageScene.currentEnemy == this)
+                if (ManageScene.currentEnemy == this.gameObject)
                     ManageScene.ReleaseCurrentEnemy();
                 PlayerMovement.dragBody = false;
             }
             else 
             {
                 if (!ManageScene.draggingEnemy)
-                    ManageScene.SetCurrentEnemy(this);
+                    ManageScene.SetCurrentEnemy(this.gameObject);
                 PlayerMovement.dragBody = true;
             }
         }
-        #region Destroy Body
-        if (BoxManager.destoyBody && ManageScene.currentEnemy != null && ManageScene.currentEnemy.gameObject == gameObject)
-        {
-            PlayerMovement.dragBody = false;
-            ManageScene.ReleaseCurrentEnemy();
-            Destroy(gameObject);
-        }
-        #endregion
         #region UpdateCollisionCheck
         if (!hasCollision)
         {
@@ -59,6 +55,25 @@ public class TestBody : MonoBehaviour
             playerInRange = false;
         }
         #endregion
+    }
+    private void UpdateCollisionState()
+    {
+        Collider2D innerPlayerTag = GameObject.FindGameObjectWithTag("InnerPlayer").GetComponent<Collider2D>();
+        collisionWPlayer = arm1.IsTouching(innerPlayerTag) || arm2.IsTouching(innerPlayerTag) || leg1.IsTouching(innerPlayerTag) || leg2.IsTouching(innerPlayerTag);
+
+        if (collisionWPlayer)
+        {
+            sr.color = Color.green;
+        }
+        else
+        {
+            sr.color = Color.red;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        UpdateCollisionState();
     }
     #region Manage PlayerInRange
     private void OnTriggerStay2D(Collider2D collision)
