@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class TestBody : MonoBehaviour
 {
-    public CapsuleCollider2D arm1;
-    public CapsuleCollider2D arm2;
-    public CapsuleCollider2D leg1;
-    public CapsuleCollider2D leg2;
+    public CapsuleCollider2D bodyPart1;
+    public CapsuleCollider2D bodyPart2;
+    public CapsuleCollider2D bodyPart3;
+    public CapsuleCollider2D bodyPart4;
 
     public SpriteRenderer sr;
     Vector2 player;
@@ -17,12 +17,11 @@ public class TestBody : MonoBehaviour
     bool isToggled = true;
     bool playerInRange = false;
     bool hasCollision = false;
-    bool collisionWPlayer;
+    bool collisionWbodyPart1;
+    bool collisionWbodyPart2;
+    bool collisionWbodyPart3;
+    bool collisionWbodyPart4;
     bool bodyKilled = false;
-    private void Start()
-    {
-        sr.color = Color.red;
-    }
     void Update()
     {
         player = GameObject.FindWithTag("Player").transform.position;
@@ -55,34 +54,111 @@ public class TestBody : MonoBehaviour
             playerInRange = false;
         }
         #endregion
+        CheckCollisionWithInnerPlayer(bodyPart1);
+        CheckCollisionWithInnerPlayer(bodyPart2);
+        CheckCollisionWithInnerPlayer(bodyPart3);
+        CheckCollisionWithInnerPlayer(bodyPart4);
+    }
+
+
+
+    void CheckCollisionWithInnerPlayer(CapsuleCollider2D collider)
+    {
+        if (collider.IsTouching(GameObject.FindGameObjectWithTag("InnerPlayer").GetComponent<Collider2D>()))
+        {
+            // Do something when the collider is in collision with InnerPlayer
+            Debug.Log($"{collider.name} is in collision with InnerPlayer");
+        }
     }
     private void UpdateCollisionState()
     {
-        Collider2D innerPlayerTag = GameObject.FindGameObjectWithTag("InnerPlayer").GetComponent<Collider2D>();
-        collisionWPlayer = arm1.IsTouching(innerPlayerTag) || arm2.IsTouching(innerPlayerTag) || leg1.IsTouching(innerPlayerTag) || leg2.IsTouching(innerPlayerTag);
+        CircleCollider2D innerPlayerCollider = GameObject.FindGameObjectWithTag("InnerPlayer").GetComponent<CircleCollider2D>();
 
-        if (collisionWPlayer)
+        if (bodyPart1.IsTouching(innerPlayerCollider))
         {
-            sr.color = Color.green;
+            // Collision detected
+            Debug.Log("InnerPlayer collided with bodyPart1");
         }
-        else
-        {
-            sr.color = Color.red;
-        }
+                float radius = bodyPart1.bounds.size.x / 2f;  // Assuming the collider is roughly circular
+
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, LayerMask.GetMask("InnerPlayer"));
+
+
+                // Check if there are any colliders with the InnerPlayer tag
+                bool playerCollision = colliders.Length > 0;
+
+                if (playerCollision)
+                {
+                    float distance1 = Vector3.Distance(bodyPart1.gameObject.transform.position, colliders[0].gameObject.transform.position);
+                    float distance2 = Vector3.Distance(bodyPart2.gameObject.transform.position, colliders[0].gameObject.transform.position);
+                    float distance3 = Vector3.Distance(bodyPart3.gameObject.transform.position, colliders[0].gameObject.transform.position);
+                    float distance4 = Vector3.Distance(bodyPart4.gameObject.transform.position, colliders[0].gameObject.transform.position);
+
+                    float shortestDistance = Mathf.Min(distance1, Mathf.Min(distance2, Mathf.Min(distance3, distance4)));
+                    if (shortestDistance == distance1)
+                    {
+                        Debug.Log("1");
+                    }
+                    if (shortestDistance == distance2)
+                    {
+                        Debug.Log("2");
+                    }
+                    if (shortestDistance == distance3)
+                    {
+                        Debug.Log("3");
+                    }
+                    if (shortestDistance == distance4)
+                    {
+                        Debug.Log("4");
+                    }
+                }
     }
+
+
 
     void FixedUpdate()
     {
         UpdateCollisionState();
     }
     #region Manage PlayerInRange
+    public bool touching1 = false;
+    public bool toucing2 = false;
+    public bool toucing3 = false;
+    public bool toucing4 = false;
     private void OnTriggerStay2D(Collider2D collision)
     {
+
         if (collision.CompareTag("InnerPlayer"))
         {
-            playerInRange = true;
-            hasCollision = true;
-            sr.color = Color.green;
+            if (collision.IsTouching(bodyPart1))
+            {
+                Debug.Log($"{gameObject.name} is in collision with InnerPlayer at bodyPart1");
+                touching1 = true;
+            }
+
+            if (collision.IsTouching(bodyPart2))
+            {
+                Debug.Log($"{gameObject.name} is in collision with InnerPlayer at bodyPart2");
+                toucing2 = true;
+            }
+
+            if (collision.IsTouching(bodyPart3))
+            {
+                Debug.Log($"{gameObject.name} is in collision with InnerPlayer at bodyPart3");
+                toucing3 = true;
+            }
+
+            if (collision.IsTouching(bodyPart4))
+            {
+                Debug.Log($"{gameObject.name} is in collision with InnerPlayer at bodyPart4");
+                toucing4 = true;
+            }
+            if (collision.CompareTag("InnerPlayer"))
+            {
+                playerInRange = true;
+                hasCollision = true;
+                sr.color = Color.green;
+            }
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
