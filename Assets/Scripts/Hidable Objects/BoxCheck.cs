@@ -8,7 +8,6 @@ public class BoxCheck : MonoBehaviour
 
     public BoxManager BoxMan;
     bool ableToHide = false;
-    bool inThisBox = false;
 
     public Transform exitLocation;
 
@@ -53,7 +52,5 @@ public class BoxCheck : MonoBehaviour
             ableToHide = false;
             sr.color = Color.red;
         }
-
-
     }
 }

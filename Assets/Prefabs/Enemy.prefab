@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8583166577477625917}
   - component: {fileID: 7457190899969277751}
   - component: {fileID: 3424510415560651976}
-  - component: {fileID: 7252764533180282539}
   - component: {fileID: 1012037490391963582}
   m_Layer: 0
   m_Name: Enemy
@@ -132,19 +131,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3947904, y: 0.35742074}
   m_EdgeRadius: 0
---- !u!114 &7252764533180282539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4698709043628513197}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d888aaaf486e01d4589d952d4e956eed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationSpeed: 9
 --- !u!114 &1012037490391963582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,4 +145,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   choke: {fileID: 21300000, guid: cc0e9ecd1b3e0ac4eaf03fc96ccaf668, type: 3}
   enemyHitBox: {fileID: 3424510415560651976}
-  Body: {fileID: 1390470915762571954, guid: 947a9a8ebf62d2f45a3e8be0333a9792, type: 3}
+  Body: {fileID: 426033896016516434, guid: 63394a39050a25042b1fd48f69801db0, type: 3}
+  isChoking: 0
