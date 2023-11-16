@@ -53,7 +53,7 @@ public class TestBody : MonoBehaviour
             if(closestBodyPart != null)
             {
                 Vector3 playerPos = new Vector3(player.x, player.y, -0.1f);
-                closestBodyPart.position = Vector2.MoveTowards(closestBodyPart.position, playerPos, 1);
+                closestBodyPart.position = Vector2.MoveTowards(closestBodyPart.position, playerPos, 5);
             }
             else
             {

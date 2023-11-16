@@ -66,6 +66,11 @@ public class PlayerMovement : MonoBehaviour
             idle = true;
             input = 0;
         }
+        if (Input.GetKey(KeyCode.Q) && ManageScene.canChoke)
+        {
+            ManageScene.TargetedChokeEnemy.currentState = EnemyStates.EnemyState.Unconscious;
+            ManageScene.TargetedChokeEnemy.UpdateState();
+        }
         #endregion
         #region Sprint Horizontal Vertical
         if (Input.GetKey(KeyCode.W) && input == 1 && !lockMovement && underMaxVelocity)

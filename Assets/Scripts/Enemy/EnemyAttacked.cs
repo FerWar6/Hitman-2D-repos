@@ -14,7 +14,6 @@ public class EnemyAttacked : MonoBehaviour
     PlayerMovement playerMovement;
     Transform playerTransform;
 
-    Vector3 moveDirection;
     Vector2 player;
 
     bool ableToAttack = false;
@@ -38,12 +37,9 @@ public class EnemyAttacked : MonoBehaviour
         #region Dying
         if (health <= 0)
         {
-            PlayerMovement.lockMovement = false;
-            GameObject deadBody = Instantiate(Body);
-            deadBody.transform.rotation = Quaternion.Euler(0, 0, angle - 90);
-            deadBody.transform.position = new Vector2(transform.position.x,transform.position.y);
-            Destroy(gameObject);
+            Die();
         }
+
         #endregion
         #region Being Attacked
         player = GameObject.FindWithTag("Player").transform.position;
@@ -116,4 +112,12 @@ public class EnemyAttacked : MonoBehaviour
         PlayerMovement.lockMovement = false;
     }
     #endregion
+    public void Die()
+    {
+        PlayerMovement.lockMovement = false;
+        GameObject deadBody = Instantiate(Body);
+        deadBody.transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+        deadBody.transform.position = new Vector2(transform.position.x, transform.position.y);
+        Destroy(gameObject);
+    }
 }
