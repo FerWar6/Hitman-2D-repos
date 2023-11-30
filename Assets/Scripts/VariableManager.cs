@@ -1,17 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
-public class ManageScene : MonoBehaviour
+public class VariableManager : MonoBehaviour
 {
-    public TMP_Text debug;
-
     public static bool targetFound = false;
     public static EnemyStates TargetedEnemy;
     public static bool canChoke = false;
     public static EnemyStates TargetedChokeEnemy;
-    
+
     public static bool foundTarget = false;
     public static EnemyAttacked TargetEnemy;
     public static bool chokingEnemy = false;

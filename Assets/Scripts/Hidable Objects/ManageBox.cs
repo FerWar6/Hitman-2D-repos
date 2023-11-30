@@ -51,7 +51,7 @@ public class ManageBox : MonoBehaviour
     {
         collisionWPlayer = extBoxColl.IsTouching(GameObject.FindGameObjectWithTag("InnerPlayer").GetComponent<Collider2D>());
 
-        if (collisionWPlayer)
+        if (collisionWPlayer && bodies < 2)
         {
             sr.color = Color.green;
         }
