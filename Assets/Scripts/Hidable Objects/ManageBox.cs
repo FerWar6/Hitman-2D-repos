@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class ManageBox : MonoBehaviour
 {
-    PlayerMovement playerMovement;
+    public PlayerMovement playerMovement;
 
     public SpriteRenderer sr;
     public BoxCollider2D extBoxColl;
     public Transform exitLocation;
 
     bool inThisBox = false;
-    bool collisionWPlayer;
+    public bool collisionWPlayer;
 
-    int bodies;
+    public int bodies;
 
     void Start()
     {
@@ -21,42 +21,21 @@ public class ManageBox : MonoBehaviour
 
         playerMovement = GameObject.FindObjectOfType<PlayerMovement>();
     }
-
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.G) && ManageScene.currentEnemy != null && bodies < 2)
-        {
-            DestroyBody();
-        }
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            // Get In Box
-            if (!inThisBox && bodies < 2 && collisionWPlayer)
-            {
-                GetInBox();
-                inThisBox = true;
-            }
-            // Get Out Of Box
-            else if (inThisBox)
-            {
-                GetOutBox();
-                inThisBox = false;
-            }
-        }
-    }
-
     private void UpdateCollisionState()
     {
         collisionWPlayer = extBoxColl.IsTouching(GameObject.FindGameObjectWithTag("InnerPlayer").GetComponent<Collider2D>());
 
         if (collisionWPlayer && bodies < 2)
         {
+            VariableManager.SetTargetBox(this);
             sr.color = Color.green;
         }
-        else
+        else if (!collisionWPlayer)
         {
+            if(VariableManager.targetBox == this)
+            {
+                VariableManager.ReleaseBox();
+            }
             sr.color = Color.red;
         }
     }
@@ -64,35 +43,5 @@ public class ManageBox : MonoBehaviour
     void FixedUpdate()
     {
         UpdateCollisionState();
-    }
-    public void GetInBox()
-    {
-        PlayerMovement.inBox = true;
-        PlayerMovement.dragBody = false;
-        playerMovement.SetPosition(transform);
-
-        if (!ManageScene.hidingInBox)
-            ManageScene.SetCurrentBox(this);
-        ManageScene.hidingInBox = true;
-        if (ManageScene.chokingEnemy)
-            ManageScene.ReleaseCurrentChoke();
-        if (ManageScene.draggingEnemy)
-            ManageScene.ReleaseCurrentChoke();
-    }
-    public void GetOutBox()
-    {
-        PlayerMovement.inBox = false;
-        playerMovement.SetPosition(exitLocation);
-
-        if (ManageScene.currentBox == this)
-            ManageScene.ReleaseCurrentBox();
-
-    }
-    public void DestroyBody()
-    {
-        Destroy(ManageScene.currentEnemy);
-        ManageScene.draggingEnemy = false;
-        PlayerMovement.dragBody = false;
-        bodies++;
     }
 }

@@ -6,7 +6,6 @@ public class PlayerMovement : MonoBehaviour
 {
     #region Variables
     public static bool inBox = false;
-    public static TestBody currentBox;
 
     public static int input = 0;
 
@@ -23,7 +22,8 @@ public class PlayerMovement : MonoBehaviour
     bool idle = true;
     bool moveDiagonal = false;
 
-    Rigidbody2D rb2D;
+    public CircleCollider2D circleColl;
+    public Rigidbody2D rb2D;
     SpriteRenderer sr;
 
     public Sprite dragBodySprite;
@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         rb2D = GetComponent<Rigidbody2D>();
+        circleColl = GetComponent<CircleCollider2D>();
     }
     void FixedUpdate()
     {
@@ -65,11 +66,6 @@ public class PlayerMovement : MonoBehaviour
             moveDiagonal = false;
             idle = true;
             input = 0;
-        }
-        if (Input.GetKey(KeyCode.Q) && ManageScene.canChoke)
-        {
-            ManageScene.TargetedChokeEnemy.currentState = EnemyStates.EnemyState.Unconscious;
-            ManageScene.TargetedChokeEnemy.UpdateState();
         }
         #endregion
         #region Sprint Horizontal Vertical

@@ -130,7 +130,7 @@ public class EnemyStates : MonoBehaviour
                     Debug.DrawRay(transform.position, -transform.up * 0.35f, Color.green);
                     Debug.DrawLine(transform.position, player, Color.blue);
                 }
-                ManageScene.SetCurrentChokeEnemy(this);
+                VariableManager.SetTargetChoke(this);
 
                 angle = Mathf.Atan2(player.y - transform.position.y, player.x - transform.position.x) * Mathf.Rad2Deg;
                 playerMovement.SetChokeAngle(angle);

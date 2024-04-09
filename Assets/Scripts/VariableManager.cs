@@ -4,92 +4,142 @@ using UnityEngine;
 
 public class VariableManager : MonoBehaviour
 {
-    public static bool targetFound = false;
-    public static EnemyStates TargetedEnemy;
+    public static bool isChoking = false;
+    public static bool isDraging = false;
+    public static bool isHiding = false;
+    public static bool isThrowing = false;
+
     public static bool canChoke = false;
-    public static EnemyStates TargetedChokeEnemy;
+    public static bool canDrag = false;
+    public static bool canHide = false;
+    public static bool canThrow = false;
 
-    public static bool foundTarget = false;
-    public static EnemyAttacked TargetEnemy;
-    public static bool chokingEnemy = false;
-    public static EnemyAttacked currentChoke;
-    public static bool draggingEnemy = false;
-    public static GameObject currentEnemy;
-    public static bool hidingInBox = false;
-    public static ManageBox currentBox;
-    public static void SetCurrentEnemy(GameObject enemy)
+    public static EnemyStates targetChoke;
+    public static EnemyStates choke;
+
+    public static EnemyStates targetBody;
+    public static EnemyStates body;
+
+    public static EnemyStates targetThrow;
+    public static EnemyStates throwAt;
+
+    public static ManageBox targetBox;
+    public static ManageBox box;
+
+    #region Setting Choke
+    public static void SetTargetChoke(EnemyStates target)
     {
-        currentEnemy = enemy;
-        draggingEnemy = true;
-    }
-
-    public static void ReleaseCurrentEnemy()
-    {
-        currentEnemy = null;
-        draggingEnemy = false;
-    }
-    public static void SetCurrentBox(ManageBox box)
-    {
-        currentBox = box;
-        hidingInBox = true;
-    }
-
-    public static void ReleaseCurrentBox()
-    {
-        currentBox = null;
-        hidingInBox = false;
-    }
-    public static void SetCurrentChoke(EnemyAttacked choke)
-    {
-        currentChoke = choke;
-        chokingEnemy = true;
-    }
-
-    public static void ReleaseCurrentChoke()
-    {
-        currentChoke = null;
-        chokingEnemy = false;
-    }
-    public static void SetCurrentTarget(EnemyAttacked target)
-    {
-        TargetEnemy = target;
-        foundTarget = true;
-    }
-
-    public static void ReleaseCurrentTarget()
-    {
-        TargetEnemy = null;
-        foundTarget = false;
-    }
-
-
-
-
-
-    public static void SetCurrentChokeEnemy(EnemyStates choke)
-    {
-        TargetedChokeEnemy = choke;
+        targetChoke = target;
         canChoke = true;
     }
-
-    public static void ReleaseCurrentChokeEnemy()
+    public static void SetChokeAsTargetChoke(EnemyStates target)
     {
-        TargetedChokeEnemy = null;
+        choke = target;
         canChoke = false;
+        isChoking = true;
     }
-    public static void SetCurrentTargetedEnemy(EnemyStates target)
+    public static void ReleaseTargetChoke()
     {
-        TargetedEnemy = target;
-        targetFound = true;
+        targetChoke = null;
+        canChoke = false;
+    }    
+    public static void ReleaseChoke()
+    {
+        targetChoke = null;
+        choke = null;
+        canChoke = false;
+        isChoking = false;
+    }
+    #endregion
+    #region Setting Body
+    public static void SetTargetBody(EnemyStates target)
+    {
+        targetBody = target;
+        canDrag = true;
+    }
+    public static void SetBodyAsTargetBody(EnemyStates target)
+    {
+        body = target;
+        canDrag = false;
+        isDraging = true;
+    }
+    public static void ReleaseTargetBody()
+    {
+        targetBody = null;
+        canDrag = false;
+    }
+    public static void ReleaseBody()
+    {
+        targetBody = null;
+        body = null;
+        canDrag = false;
+        isDraging = false;
+    }
+    public static void DestroyBody()
+    {
+        Destroy(body);
+        isDraging = false;
+        box.bodies++;
     }
 
-    public static void ReleaseCurrentTargetedEnemy()
+    #endregion    
+    #region Setting Throw
+    public static void SetTargetThrow(EnemyStates target)
     {
-        TargetedEnemy = null;
-        targetFound = false;
+        targetThrow = target;
+        canThrow = true;
     }
+    public static void SetThrowAsTargetThrow(EnemyStates target)
+    {
+        throwAt = target;
+        canThrow = true;
+        isThrowing = true;
+    }
+    public static void ReleaseTargetThrow()
+    {
+        targetThrow = null;
+        canThrow = true;
+    }
+    public static void ReleaseThrow()
+    {
+        targetThrow = null;
+        throwAt = null;
+        canThrow = true;
+        isThrowing = false;
+    }
+    #endregion    
+    #region Setting Box
+    public static void SetTargetBox(ManageBox target)
+    {
+        targetBox = target;
+        canHide = true;
+    }
+    public static void SetBoxAsTargetBox(ManageBox target)
+    {
+        box = target;
+        canHide = false;
+        isHiding = true;
+    }
+    public static void ReleaseTargetBox()
+    {
+        targetBox = null;
+        isHiding = false;
+    }
+    public static void ReleaseBox()
+    {
+        targetBox = null;
+        box = null;
+        canHide = false;
+        isHiding = false;
+    }
+#endregion
     private void Update()
     {
-        Debug.Log(TargetedChokeEnemy);
+        Debug.Log("Current Target enemy" + targetChoke);
+        Debug.Log("Current Target box" + targetBox);
+        if(choke != null)
+        {
+            Debug.Log("Choking enemy" + choke);
+        }
     }
 }
